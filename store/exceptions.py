@@ -2,5 +2,13 @@ class StoreError(Exception):
     pass
 
 
-class InvalidOrderStatus(StoreError):
+class ValidationError(StoreError):
+    pass
+
+
+class OrderOperationError(StoreError):
+    pass
+
+
+class InvalidOrderStatus(OrderOperationError):
     pass

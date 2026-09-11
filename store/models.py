@@ -1,4 +1,4 @@
-from .exceptions import InvalidOrderStatus
+from .exceptions import InvalidOrderStatus, ValidationError
 
 
 class Product:
@@ -10,19 +10,19 @@ class Product:
     @staticmethod
     def _validate_id(value: int) -> int:
         if type(value) is not int or value <= 0:
-            raise ValueError("id must be positive integer")
+            raise ValidationError("id must be positive integer")
         return value
 
     @staticmethod
     def _validate_name(value: str) -> str:
         if not isinstance(value, str) or not value.strip():
-            raise ValueError("name cannot be empty")
+            raise ValidationError("name cannot be empty")
         return value.strip()
 
     @staticmethod
     def _validate_price(value: float) -> float:
         if type(value) not in (int, float) or value <= 0:
-            raise ValueError("price must be positive")
+            raise ValidationError("price must be positive number")
         return float(value)
 
     def __eq__(self, other: object) -> bool:
@@ -43,19 +43,19 @@ class User:
     @staticmethod
     def _validate_id(value: int) -> int:
         if type(value) is not int or value <= 0:
-            raise ValueError("id must be positive integer")
+            raise ValidationError("id must be positive integer")
         return value
 
     @staticmethod
     def _validate_name(value: str) -> str:
         if not isinstance(value, str) or not value.strip():
-            raise ValueError("name cannot be empty")
+            raise ValidationError("name cannot be empty")
         return value.strip()
 
     @staticmethod
     def _validate_email(value: str) -> str:
         if not isinstance(value, str) or not value.strip():
-            raise ValueError("email cannot be empty")
+            raise ValidationError("email cannot be empty")
         return value.strip()
 
 
@@ -97,23 +97,23 @@ class Order:
     @staticmethod
     def _validate_id(value: int) -> int:
         if type(value) is not int or value <= 0:
-            raise ValueError("id must be positive integer")
+            raise ValidationError("id must be positive integer")
         return value
 
     @staticmethod
     def _validate_user(value: object) -> User:
         if not isinstance(value, User):
-            raise TypeError("Argument should belong to class User")
+            raise ValidationError("Argument should belong to class User")
         return value
 
     @staticmethod
     def _validate_product(value: object) -> Product:
         if not isinstance(value, Product):
-            raise TypeError("Item should belong to class Product")
+            raise ValidationError("Item should belong to class Product")
         return value
 
     @staticmethod
     def _validate_quantity(value: int) -> int:
         if type(value) is not int or value <= 0:
-            raise ValueError("Quantity must be positive integer")
+            raise ValidationError("Quantity must be positive integer")
         return value

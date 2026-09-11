@@ -1,4 +1,4 @@
-from store.exceptions import StoreError
+from store.exceptions import InvalidOrderStatus, ValidationError
 from store.models import Order, Product, User
 
 
@@ -12,10 +12,16 @@ def main() -> None:
     print(order_1.total)
     order_1.pay()
     print(order_1.status)
+
     try:
         order_1.add_product(product=product_1, quantity=1)
-    except StoreError as error:
-        print(error)
+    except InvalidOrderStatus as error:
+        print(error, type(error))
+
+    try:
+        Product(17, "PS5", "500000")
+    except ValidationError as error:
+        print(error, type(error))
 
 
 if __name__ == "__main__":
