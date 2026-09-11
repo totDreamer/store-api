@@ -3,9 +3,13 @@ from .exceptions import InvalidOrderStatus, ValidationError
 
 class Product:
     def __init__(self, id: int, name: str, price: float) -> None:
-        self.id = self._validate_id(id)
+        self._id = self._validate_id(id)
         self.name = self._validate_name(name)
         self.price = self._validate_price(price)
+
+    @property
+    def id(self) -> int:
+        return self._id
 
     @staticmethod
     def _validate_id(value: int) -> int:
@@ -36,9 +40,13 @@ class Product:
 
 class User:
     def __init__(self, id: int, name: str, email: str) -> None:
-        self.id = self._validate_id(id)
+        self._id = self._validate_id(id)
         self.name = self._validate_name(name)
         self.email = self._validate_email(email)
+
+    @property
+    def id(self) -> int:
+        return self._id
 
     @staticmethod
     def _validate_id(value: int) -> int:
@@ -61,14 +69,18 @@ class User:
 
 class Order:
     def __init__(self, id: int, user: User) -> None:
-        self.id = self._validate_id(id)
+        self._id = self._validate_id(id)
         self.user = self._validate_user(user)
         self._items: dict[Product, int] = {}
         self._status: str = "new"
 
+    @property
+    def id(self) -> int:
+        return self._id
+
     def add_product(self, product: Product, quantity: int) -> None:
         if self.status != "new":
-            raise InvalidOrderStatus(f"Нельзя изменить заказ.\nid:{self.id}")
+            raise InvalidOrderStatus(f"The order cannot be modified.\nid:{self.id}")
         self._validate_product(product)
         self._validate_quantity(quantity)
         self._items[product] = self._items.get(product, 0) + quantity
@@ -86,12 +98,12 @@ class Order:
 
     def pay(self) -> None:
         if self.status != "new":
-            raise InvalidOrderStatus(f"Оплата закрытого или отмененного заказа невозможна\nid:{self.id}")
+            raise InvalidOrderStatus(f"Payment for a closed or cancelled order is not possible.\nid:{self.id}")
         self._status = "paid"
 
     def cancel(self) -> None:
         if self.status != "new":
-            raise InvalidOrderStatus(f"Отмена оплаченного или закрытого заказа невозможна.\nid:{self.id}")
+            raise InvalidOrderStatus(f"It is not possible to cancel a closed or cancelled order.\nid:{self.id}")
         self._status = "cancelled"
 
     @staticmethod

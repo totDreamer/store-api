@@ -12,3 +12,7 @@ class OrderOperationError(StoreError):
 
 class InvalidOrderStatus(OrderOperationError):
     pass
+
+
+class StoreOperationError(StoreError):
+    pass
